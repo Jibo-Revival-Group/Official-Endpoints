@@ -89,9 +89,9 @@
         {
           "version": "1",
           "versionTag": "2",
-          "name": "3",
-          "description": "4",
-          "releaseDate": "7891-05-06T17:07:00.000Z",
+          "name": "YAYYY",
+          "description": "hdsahd",
+          "releaseDate": "2025-05-06T14:07:00.000Z",
           "preRelease": false,
           "downloadUrl": "12",
           "repoUrl": "13",
@@ -104,6 +104,6 @@
     }
   ],
   "metadata": {
-    "lastUpdated": "2026-04-30T18:33:23.412Z"
+    "lastUpdated": "2026-04-30T18:39:16.362Z"
   }
 }
