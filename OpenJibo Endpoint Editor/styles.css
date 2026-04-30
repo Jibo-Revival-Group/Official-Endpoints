@@ -1,0 +1,524 @@
+/* Import Google Fonts and Material Icons */
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap');
+@import url('https://fonts.googleapis.com/icon?family=Material+Icons');
+
+/* Material Design CSS Variables */
+:root {
+  /* Light theme colors */
+  --md-sys-color-primary: #6750A4;
+  --md-sys-color-on-primary: #FFFFFF;
+  --md-sys-color-primary-container: #EADDFF;
+  --md-sys-color-on-primary-container: #21005D;
+  --md-sys-color-secondary: #625B71;
+  --md-sys-color-on-secondary: #FFFFFF;
+  --md-sys-color-secondary-container: #E8DEF8;
+  --md-sys-color-on-secondary-container: #1D192B;
+  --md-sys-color-tertiary: #7D5260;
+  --md-sys-color-on-tertiary: #FFFFFF;
+  --md-sys-color-tertiary-container: #FFD8E4;
+  --md-sys-color-on-tertiary-container: #31111D;
+  --md-sys-color-surface: #FEF7FF;
+  --md-sys-color-on-surface: #1D1B20;
+  --md-sys-color-surface-variant: #E7E0EC;
+  --md-sys-color-on-surface-variant: #49454F;
+  --md-sys-color-outline: #79747E;
+  --md-sys-color-outline-variant: #CAC4D0;
+  --md-sys-color-shadow: #000000;
+  --md-sys-color-scrim: #000000;
+  --md-sys-color-inverse-surface: #322F35;
+  --md-sys-color-inverse-on-surface: #F5EFF7;
+  --md-sys-color-inverse-primary: #D0BCFF;
+  --md-sys-color-surface-dim: #DDD8E1;
+  --md-sys-color-surface-bright: #FEF7FF;
+  --md-sys-color-surface-container-lowest: #FFFFFF;
+  --md-sys-color-surface-container-low: #F7F2FA;
+  --md-sys-color-surface-container: #F1ECF4;
+  --md-sys-color-surface-container-high: #ECE6F0;
+  --md-sys-color-surface-container-highest: #E6E0E9;
+  
+  /* Error colors */
+  --md-sys-color-error: #BA1A1A;
+  --md-sys-color-on-error: #FFFFFF;
+  --md-sys-color-error-container: #FFDAD6;
+  --md-sys-color-on-error-container: #410002;
+  
+  /* Custom colors for the app */
+  --app-bg: var(--md-sys-color-surface);
+  --app-text: var(--md-sys-color-on-surface);
+  --app-text-secondary: var(--md-sys-color-on-surface-variant);
+  --app-surface: var(--md-sys-color-surface-container);
+  --app-border: var(--md-sys-color-outline-variant);
+  --app-primary: var(--md-sys-color-primary);
+  --app-on-primary: var(--md-sys-color-on-primary);
+}
+
+[data-theme="dark"] {
+  /* Dark theme colors */
+  --md-sys-color-primary: #D0BCFF;
+  --md-sys-color-on-primary: #381E72;
+  --md-sys-color-primary-container: #4F378B;
+  --md-sys-color-on-primary-container: #EADDFF;
+  --md-sys-color-secondary: #CCC2DC;
+  --md-sys-color-on-secondary: #332D41;
+  --md-sys-color-secondary-container: #4A4458;
+  --md-sys-color-on-secondary-container: #E8DEF8;
+  --md-sys-color-tertiary: #EFB8C8;
+  --md-sys-color-on-tertiary: #492532;
+  --md-sys-color-tertiary-container: #633B48;
+  --md-sys-color-on-tertiary-container: #FFD8E4;
+  --md-sys-color-surface: #121212;
+  --md-sys-color-on-surface: #E6E0E9;
+  --md-sys-color-surface-variant: #49454F;
+  --md-sys-color-on-surface-variant: #CAC4D0;
+  --md-sys-color-outline: #938F99;
+  --md-sys-color-outline-variant: #49454F;
+  --md-sys-color-shadow: #000000;
+  --md-sys-color-scrim: #000000;
+  --md-sys-color-inverse-surface: #E6E0E9;
+  --md-sys-color-inverse-on-surface: #322F35;
+  --md-sys-color-inverse-primary: #6750A4;
+  --md-sys-color-surface-dim: #121212;
+  --md-sys-color-surface-bright: #38343C;
+  --md-sys-color-surface-container-lowest: #0D0D0D;
+  --md-sys-color-surface-container-low: #1D1B20;
+  --md-sys-color-surface-container: #211F26;
+  --md-sys-color-surface-container-high: #2B2930;
+  --md-sys-color-surface-container-highest: #36343B;
+  
+  /* Error colors in dark theme */
+  --md-sys-color-error: #FFB4AB;
+  --md-sys-color-on-error: #690005;
+  --md-sys-color-error-container: #93000A;
+  --md-sys-color-on-error-container: #FFDAD6;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'Roboto', sans-serif;
+  background-color: var(--app-bg);
+  color: var(--app-text);
+  line-height: 1.5;
+  transition: background-color 0.3s ease, color 0.3s ease;
+  min-height: 100vh;
+}
+
+.wrap {
+  padding: 24px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.step-bar {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 24px;
+  align-items: center;
+}
+
+.crumb {
+  font-size: 14px;
+  color: var(--app-text-secondary);
+  font-weight: 500;
+}
+
+.crumb.active {
+  color: var(--app-text);
+  font-weight: 500;
+}
+
+.crumb-sep {
+  font-size: 14px;
+  color: var(--app-text-secondary);
+}
+
+.section-label {
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--app-text-secondary);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  margin-bottom: 16px;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.tile {
+  background: var(--app-surface);
+  border: 1px solid var(--app-border);
+  border-radius: 12px;
+  padding: 20px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: var(--md-sys-elevation-level1);
+}
+
+.tile:hover {
+  box-shadow: var(--md-sys-elevation-level2);
+  transform: translateY(-2px);
+}
+
+.tile.selected {
+  border: 2px solid var(--app-primary);
+  box-shadow: var(--md-sys-elevation-level2);
+}
+
+.tile-title {
+  font-size: 16px;
+  font-weight: 500;
+  margin-bottom: 4px;
+  color: var(--app-text);
+}
+
+.tile-sub {
+  font-size: 14px;
+  color: var(--app-text-secondary);
+}
+
+.flag {
+  font-size: 24px;
+  margin-bottom: 8px;
+}
+
+.releases-section {
+  margin-top: 16px;
+}
+
+.release-card {
+  background: var(--app-surface);
+  border: 1px solid var(--app-border);
+  border-radius: 12px;
+  padding: 20px;
+  margin-bottom: 12px;
+  box-shadow: var(--md-sys-elevation-level1);
+  transition: box-shadow 0.2s ease;
+}
+
+.release-card:hover {
+  box-shadow: var(--md-sys-elevation-level2);
+}
+
+.release-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.release-name {
+  font-size: 16px;
+  font-weight: 500;
+  color: var(--app-text);
+}
+
+.release-meta {
+  font-size: 14px;
+  color: var(--app-text-secondary);
+  margin-top: 4px;
+}
+
+.tags-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.tag {
+  font-size: 12px;
+  padding: 4px 12px;
+  border-radius: 16px;
+  font-weight: 500;
+}
+
+.actions {
+  display: flex;
+  gap: 8px;
+  margin-top: 16px;
+}
+
+.badge-pre {
+  font-size: 12px;
+  padding: 4px 12px;
+  border-radius: 16px;
+  background: #FFF8E1;
+  color: #F57C00;
+  font-weight: 500;
+}
+
+.badge-stable {
+  font-size: 12px;
+  padding: 4px 12px;
+  border-radius: 16px;
+  background: #E8F5E8;
+  color: #2E7D32;
+  font-weight: 500;
+}
+
+.back-btn {
+  font-size: 14px;
+  padding: 8px 0;
+  border: none;
+  background: none;
+  color: var(--app-primary);
+  cursor: pointer;
+  margin-bottom: 16px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-weight: 500;
+}
+
+.back-btn:hover {
+  text-decoration: underline;
+}
+
+.host-header {
+  margin-bottom: 16px;
+}
+
+.host-title {
+  font-size: 20px;
+  font-weight: 500;
+  color: var(--app-text);
+}
+
+.host-sub {
+  font-size: 14px;
+  color: var(--app-text-secondary);
+  margin-top: 4px;
+  word-break: break-all;
+}
+
+.modal-bg {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 100;
+  padding: 20px;
+}
+
+.modal {
+  background: var(--app-surface);
+  border: 1px solid var(--app-border);
+  border-radius: 16px;
+  padding: 24px;
+  width: 100%;
+  max-width: 600px;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: var(--md-sys-elevation-level3);
+}
+
+.modal-title {
+  font-size: 20px;
+  font-weight: 500;
+  margin-bottom: 20px;
+  color: var(--app-text);
+}
+
+.field {
+  margin-bottom: 16px;
+}
+
+.field label {
+  display: block;
+  font-size: 14px;
+  color: var(--app-text-secondary);
+  margin-bottom: 6px;
+  font-weight: 500;
+}
+
+.field input,
+.field textarea,
+.field select {
+  width: 100%;
+  font-family: 'Roboto', sans-serif;
+  font-size: 14px;
+  padding: 12px 16px;
+  border-radius: 8px;
+  border: 1px solid var(--app-border);
+  background: var(--app-bg);
+  color: var(--app-text);
+  transition: border-color 0.2s ease;
+}
+
+.field input:focus,
+.field textarea:focus,
+.field select:focus {
+  outline: none;
+  border-color: var(--app-primary);
+}
+
+.field textarea {
+  min-height: 80px;
+  resize: vertical;
+}
+
+.field-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.tags-check {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 8px;
+}
+
+.tags-check label {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 14px;
+  cursor: pointer;
+  color: var(--app-text);
+}
+
+.modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-top: 24px;
+}
+
+.export-bar {
+  margin-top: 32px;
+  padding-top: 24px;
+  border-top: 1px solid var(--app-border);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+}
+
+.add-row {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 16px;
+}
+
+.empty {
+  font-size: 14px;
+  color: var(--app-text-secondary);
+  padding: 32px;
+  text-align: center;
+  border: 2px dashed var(--app-border);
+  border-radius: 12px;
+  background: var(--app-surface);
+}
+
+.confirm-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 200;
+  padding: 20px;
+}
+
+.confirm-box {
+  background: var(--app-surface);
+  border: 1px solid var(--app-border);
+  border-radius: 16px;
+  padding: 24px;
+  max-width: 400px;
+  width: 100%;
+  box-shadow: var(--md-sys-elevation-level3);
+}
+
+.confirm-msg {
+  font-size: 16px;
+  margin-bottom: 20px;
+  color: var(--app-text);
+}
+
+.confirm-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+}
+
+.theme-toggle {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: 50;
+}
+
+.theme-toggle md-icon-button {
+  background: var(--app-surface);
+  border: 1px solid var(--app-border);
+  box-shadow: var(--md-sys-elevation-level2);
+}
+
+/* Material Design elevation */
+:root {
+  --md-sys-elevation-level0: 0px 0px 0px 0px rgba(0, 0, 0, 0.2), 0px 0px 0px 0px rgba(0, 0, 0, 0.14), 0px 0px 0px 0px rgba(0, 0, 0, 0.12);
+  --md-sys-elevation-level1: 0px 1px 2px 0px rgba(0, 0, 0, 0.3), 0px 1px 3px 1px rgba(0, 0, 0, 0.15), 0px 2px 1px -1px rgba(0, 0, 0, 0.12);
+  --md-sys-elevation-level2: 0px 1px 2px 0px rgba(0, 0, 0, 0.3), 0px 2px 6px 2px rgba(0, 0, 0, 0.15), 0px 3px 1px -2px rgba(0, 0, 0, 0.12);
+  --md-sys-elevation-level3: 0px 1px 3px 0px rgba(0, 0, 0, 0.3), 0px 4px 8px 3px rgba(0, 0, 0, 0.15), 0px 6px 1px -4px rgba(0, 0, 0, 0.12);
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .wrap {
+    padding: 16px;
+  }
+  
+  .grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .field-row {
+    grid-template-columns: 1fr;
+  }
+  
+  .export-bar {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  
+  .theme-toggle {
+    top: 16px;
+    right: 16px;
+  }
+}
+
+/* Material Web component overrides */
+md-outlined-text-field,
+md-filled-text-field {
+  width: 100%;
+}
+
+md-select {
+  width: 100%;
+}
+
+md-outlined-button,
+md-filled-button,
+md-text-button {
+  font-family: 'Roboto', sans-serif;
+}

@@ -1,0 +1,892 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>OpenJiboOS Mirror Editor</title>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <script type="importmap">
+    {
+      "imports": {
+        "@material/web/": "https://esm.run/@material/web/"
+      }
+    }
+  </script>
+  <script type="module">
+    import '@material/web/all.js';
+    import {styles as typescaleStyles} from '@material/web/typography/md-typescale-styles.js';
+    document.adoptedStyleSheets.push(typescaleStyles.styleSheet);
+  </script>
+</head>
+<body>
+
+<style>
+:root {
+  /* Light theme colors */
+  --md-sys-color-primary: #6750A4;
+  --md-sys-color-on-primary: #FFFFFF;
+  --md-sys-color-primary-container: #EADDFF;
+  --md-sys-color-on-primary-container: #21005D;
+  --md-sys-color-secondary: #625B71;
+  --md-sys-color-on-secondary: #FFFFFF;
+  --md-sys-color-secondary-container: #E8DEF8;
+  --md-sys-color-on-secondary-container: #1D192B;
+  --md-sys-color-tertiary: #7D5260;
+  --md-sys-color-on-tertiary: #FFFFFF;
+  --md-sys-color-tertiary-container: #FFD8E4;
+  --md-sys-color-on-tertiary-container: #31111D;
+  --md-sys-color-surface: #FEF7FF;
+  --md-sys-color-on-surface: #1D1B20;
+  --md-sys-color-surface-variant: #E7E0EC;
+  --md-sys-color-on-surface-variant: #49454F;
+  --md-sys-color-outline: #79747E;
+  --md-sys-color-outline-variant: #CAC4D0;
+  --md-sys-color-shadow: #000000;
+  --md-sys-color-scrim: #000000;
+  --md-sys-color-inverse-surface: #322F35;
+  --md-sys-color-inverse-on-surface: #F5EFF7;
+  --md-sys-color-inverse-primary: #D0BCFF;
+  --md-sys-color-surface-dim: #DDD8E1;
+  --md-sys-color-surface-bright: #FEF7FF;
+  --md-sys-color-surface-container-lowest: #FFFFFF;
+  --md-sys-color-surface-container-low: #F7F2FA;
+  --md-sys-color-surface-container: #F1ECF4;
+  --md-sys-color-surface-container-high: #ECE6F0;
+  --md-sys-color-surface-container-highest: #E6E0E9;
+  
+  /* Custom colors for the app */
+  --app-bg: var(--md-sys-color-surface);
+  --app-text: var(--md-sys-color-on-surface);
+  --app-text-secondary: var(--md-sys-color-on-surface-variant);
+  --app-surface: var(--md-sys-color-surface-container);
+  --app-border: var(--md-sys-color-outline-variant);
+  --app-primary: var(--md-sys-color-primary);
+  --app-on-primary: var(--md-sys-color-on-primary);
+}
+
+[data-theme="dark"] {
+  /* Dark theme colors */
+  --md-sys-color-primary: #D0BCFF;
+  --md-sys-color-on-primary: #381E72;
+  --md-sys-color-primary-container: #4F378B;
+  --md-sys-color-on-primary-container: #EADDFF;
+  --md-sys-color-secondary: #CCC2DC;
+  --md-sys-color-on-secondary: #332D41;
+  --md-sys-color-secondary-container: #4A4458;
+  --md-sys-color-on-secondary-container: #E8DEF8;
+  --md-sys-color-tertiary: #EFB8C8;
+  --md-sys-color-on-tertiary: #492532;
+  --md-sys-color-tertiary-container: #633B48;
+  --md-sys-color-on-tertiary-container: #FFD8E4;
+  --md-sys-color-surface: #121212;
+  --md-sys-color-on-surface: #E6E0E9;
+  --md-sys-color-surface-variant: #49454F;
+  --md-sys-color-on-surface-variant: #CAC4D0;
+  --md-sys-color-outline: #938F99;
+  --md-sys-color-outline-variant: #49454F;
+  --md-sys-color-shadow: #000000;
+  --md-sys-color-scrim: #000000;
+  --md-sys-color-inverse-surface: #E6E0E9;
+  --md-sys-color-inverse-on-surface: #322F35;
+  --md-sys-color-inverse-primary: #6750A4;
+  --md-sys-color-surface-dim: #121212;
+  --md-sys-color-surface-bright: #38343C;
+  --md-sys-color-surface-container-lowest: #0D0D0D;
+  --md-sys-color-surface-container-low: #1D1B20;
+  --md-sys-color-surface-container: #211F26;
+  --md-sys-color-surface-container-high: #2B2930;
+  --md-sys-color-surface-container-highest: #36343B;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'Roboto', sans-serif;
+  background-color: var(--app-bg);
+  color: var(--app-text);
+  line-height: 1.5;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.wrap {
+  padding: 24px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.step-bar {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 24px;
+  align-items: center;
+}
+
+.crumb {
+  font-size: 14px;
+  color: var(--app-text-secondary);
+  font-weight: 500;
+}
+
+.crumb.active {
+  color: var(--app-text);
+  font-weight: 500;
+}
+
+.crumb-sep {
+  font-size: 14px;
+  color: var(--app-text-secondary);
+}
+
+.section-label {
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--app-text-secondary);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  margin-bottom: 16px;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.tile {
+  background: var(--app-surface);
+  border: 1px solid var(--app-border);
+  border-radius: 12px;
+  padding: 20px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: var(--md-sys-elevation-level1);
+}
+
+.tile:hover {
+  box-shadow: var(--md-sys-elevation-level2);
+  transform: translateY(-2px);
+}
+
+.tile.selected {
+  border: 2px solid var(--app-primary);
+  box-shadow: var(--md-sys-elevation-level2);
+}
+
+.tile-title {
+  font-size: 16px;
+  font-weight: 500;
+  margin-bottom: 4px;
+  color: var(--app-text);
+}
+
+.tile-sub {
+  font-size: 14px;
+  color: var(--app-text-secondary);
+}
+
+.flag {
+  font-size: 24px;
+  margin-bottom: 8px;
+}
+
+.releases-section {
+  margin-top: 16px;
+}
+
+.release-card {
+  background: var(--app-surface);
+  border: 1px solid var(--app-border);
+  border-radius: 12px;
+  padding: 20px;
+  margin-bottom: 12px;
+  box-shadow: var(--md-sys-elevation-level1);
+  transition: box-shadow 0.2s ease;
+}
+
+.release-card:hover {
+  box-shadow: var(--md-sys-elevation-level2);
+}
+
+.release-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.release-name {
+  font-size: 16px;
+  font-weight: 500;
+  color: var(--app-text);
+}
+
+.release-meta {
+  font-size: 14px;
+  color: var(--app-text-secondary);
+  margin-top: 4px;
+}
+
+.tags-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.tag {
+  font-size: 12px;
+  padding: 4px 12px;
+  border-radius: 16px;
+  font-weight: 500;
+}
+
+.actions {
+  display: flex;
+  gap: 8px;
+  margin-top: 16px;
+}
+
+.badge-pre {
+  font-size: 12px;
+  padding: 4px 12px;
+  border-radius: 16px;
+  background: #FFF8E1;
+  color: #F57C00;
+  font-weight: 500;
+}
+
+.badge-stable {
+  font-size: 12px;
+  padding: 4px 12px;
+  border-radius: 16px;
+  background: #E8F5E8;
+  color: #2E7D32;
+  font-weight: 500;
+}
+
+.back-btn {
+  font-size: 14px;
+  padding: 8px 0;
+  border: none;
+  background: none;
+  color: var(--app-primary);
+  cursor: pointer;
+  margin-bottom: 16px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-weight: 500;
+}
+
+.back-btn:hover {
+  text-decoration: underline;
+}
+
+.host-header {
+  margin-bottom: 16px;
+}
+
+.host-title {
+  font-size: 20px;
+  font-weight: 500;
+  color: var(--app-text);
+}
+
+.host-sub {
+  font-size: 14px;
+  color: var(--app-text-secondary);
+  margin-top: 4px;
+  word-break: break-all;
+}
+
+.modal-bg {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 100;
+  padding: 20px;
+}
+
+.modal {
+  background: var(--app-surface);
+  border: 1px solid var(--app-border);
+  border-radius: 16px;
+  padding: 24px;
+  width: 100%;
+  max-width: 600px;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: var(--md-sys-elevation-level3);
+}
+
+.modal-title {
+  font-size: 20px;
+  font-weight: 500;
+  margin-bottom: 20px;
+  color: var(--app-text);
+}
+
+.field {
+  margin-bottom: 16px;
+}
+
+.field label {
+  display: block;
+  font-size: 14px;
+  color: var(--app-text-secondary);
+  margin-bottom: 6px;
+  font-weight: 500;
+}
+
+.field input,
+.field textarea,
+.field select {
+  width: 100%;
+  font-family: 'Roboto', sans-serif;
+  font-size: 14px;
+  padding: 12px 16px;
+  border-radius: 8px;
+  border: 1px solid var(--app-border);
+  background: var(--app-bg);
+  color: var(--app-text);
+  transition: border-color 0.2s ease;
+}
+
+.field input:focus,
+.field textarea:focus,
+.field select:focus {
+  outline: none;
+  border-color: var(--app-primary);
+}
+
+.field textarea {
+  min-height: 80px;
+  resize: vertical;
+}
+
+.field-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.tags-check {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 8px;
+}
+
+.tags-check label {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 14px;
+  cursor: pointer;
+  color: var(--app-text);
+}
+
+.modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-top: 24px;
+}
+
+.export-bar {
+  margin-top: 32px;
+  padding-top: 24px;
+  border-top: 1px solid var(--app-border);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+}
+
+.add-row {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 16px;
+}
+
+.empty {
+  font-size: 14px;
+  color: var(--app-text-secondary);
+  padding: 32px;
+  text-align: center;
+  border: 2px dashed var(--app-border);
+  border-radius: 12px;
+  background: var(--app-surface);
+}
+
+.confirm-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 200;
+  padding: 20px;
+}
+
+.confirm-box {
+  background: var(--app-surface);
+  border: 1px solid var(--app-border);
+  border-radius: 16px;
+  padding: 24px;
+  max-width: 400px;
+  width: 100%;
+  box-shadow: var(--md-sys-elevation-level3);
+}
+
+.confirm-msg {
+  font-size: 16px;
+  margin-bottom: 20px;
+  color: var(--app-text);
+}
+
+.confirm-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+}
+
+.theme-toggle {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: 50;
+}
+
+.theme-toggle md-icon-button {
+  background: var(--app-surface);
+  border: 1px solid var(--app-border);
+  box-shadow: var(--md-sys-elevation-level2);
+}
+
+/* Material Design elevation */
+:root {
+  --md-sys-elevation-level0: 0px 0px 0px 0px rgba(0, 0, 0, 0.2), 0px 0px 0px 0px rgba(0, 0, 0, 0.14), 0px 0px 0px 0px rgba(0, 0, 0, 0.12);
+  --md-sys-elevation-level1: 0px 1px 2px 0px rgba(0, 0, 0, 0.3), 0px 1px 3px 1px rgba(0, 0, 0, 0.15), 0px 2px 1px -1px rgba(0, 0, 0, 0.12);
+  --md-sys-elevation-level2: 0px 1px 2px 0px rgba(0, 0, 0, 0.3), 0px 2px 6px 2px rgba(0, 0, 0, 0.15), 0px 3px 1px -2px rgba(0, 0, 0, 0.12);
+  --md-sys-elevation-level3: 0px 1px 3px 0px rgba(0, 0, 0, 0.3), 0px 4px 8px 3px rgba(0, 0, 0, 0.15), 0px 6px 1px -4px rgba(0, 0, 0, 0.12);
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .wrap {
+    padding: 16px;
+  }
+  
+  .grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .field-row {
+    grid-template-columns: 1fr;
+  }
+  
+  .export-bar {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  
+  .theme-toggle {
+    top: 16px;
+    right: 16px;
+  }
+}
+</style>
+
+<!-- Theme toggle button -->
+<div class="theme-toggle">
+  <md-icon-button onclick="toggleTheme()">
+    <md-icon>light_mode</md-icon>
+  </md-icon-button>
+</div>
+
+<div class="wrap" id="app" style="position:relative;min-height:400px"></div>
+
+<script>
+const RELEASE_TYPES = {
+  NT:{label:"Nightly",color:"#9333ea",bg:"#f3e8ff"},
+  BF:{label:"Bug Fix",color:"#065f46",bg:"#d1fae5"},
+  RC:{label:"Recommended",color:"#0369a1",bg:"#e0f2fe"},
+  RT:{label:"Remote",color:"#92400e",bg:"#fef3c7"},
+  NW:{label:"New Features",color:"#065f46",bg:"#d1fae5"},
+  IP:{label:"Improvements",color:"#1e40af",bg:"#dbeafe"},
+  RF:{label:"Refactored",color:"#5b21b6",bg:"#ede9fe"},
+  BC:{label:"Breaking Change",color:"#991b1b",bg:"#fee2e2"}
+};
+
+const FLAGS = {US:"🇺🇸",GR:"🇬🇷",DE:"🇩🇪",UK:"🇬🇧",FR:"🇫🇷",JP:"🇯🇵"};
+
+let data = null;
+let view = "countries"; // countries | hosts | releases
+let selCountry = null;
+let selHost = null;
+let modal = null; // null | "addHost" | "addRelease" | "editRelease"
+let editTarget = null;
+let confirmCb = null;
+let currentTheme = localStorage.getItem('theme') || 'light';
+
+const initialJSON = `{"mirrors":[{"id":"openjiboos-official","name":"OpenJiboOS Official","location":"US","type":"JiboOS","baseUrl":"https://github.com/Jibo-Revival-Group/","releases":[{"version":"3.3.0","versionTag":"v3.3.0","name":"JiboOS v3.3.0 - Test for development","description":"Includes a pre-made firewall service that opens\\n22 SSH\\n\\n8779 Skills manager panel\\n15150 Jibo Logging panel","releaseDate":"2025-04-26T11:33:00Z","preRelease":true,"downloadUrl":"https://github.com/Jibo-Revival-Group/OpenJiboOS/releases/download/v1.0.0/openjiboos-1.0.0.zip","repoUrl":"https://github.com/Jibo-Revival-Group/OpenJiboOS/releases/tag/v1.0.0","releaseId":"9823471","tags":["RC","NW","IP"],"fileSize":"~370 MB","checksum":"-"},{"version":"1.1.0-beta","versionTag":"v1.1.0-beta","name":"OpenJiboOS v1.1.0 Beta","description":"Beta release with experimental features.","releaseDate":"2024-02-01T14:30:00Z","preRelease":true,"downloadUrl":"https://github.com/Jibo-Revival-Group/OpenJiboOS/releases/download/v1.1.0-beta/openjiboos-1.1.0-beta.zip","repoUrl":"https://github.com/Jibo-Revival-Group/OpenJiboOS/releases/tag/v1.1.0-beta","releaseId":"9823472","tags":["NT","NW","BF","IP"],"fileSize":"47.8 MB","checksum":"sha256:b2c3d4e5f6g7..."},{"version":"1.2.0","versionTag":"v1.2.0","name":"OpenJiboOS v1.2.0 - Major Update","description":"Major update with breaking changes.","releaseDate":"2024-02-20T09:15:00Z","preRelease":false,"downloadUrl":"https://github.com/Jibo-Revival-Group/OpenJiboOS/releases/download/v1.2.0/openjiboos-1.2.0.zip","repoUrl":"https://github.com/Jibo-Revival-Group/OpenJiboOS/releases/tag/v1.2.0","releaseId":"9823473","tags":["BC","RF","RC","IP"],"fileSize":"52.1 MB","checksum":"sha256:c3d4e5f6g7h8..."}]},{"id":"openjiboos-mirror-gr","name":"OpenJiboOS Greece Mirror","location":"GR","type":"OpenJiboOS","baseUrl":"https://kevinblog.sytes.net/Code/Jibo-Revival-Group/OpenJiboOS","releases":[{"version":"1.0.0","versionTag":"v1.0.0","name":"OpenJiboOS v1.0.0 - Stable Release","description":"Initial stable release of OpenJiboOS.","releaseDate":"2024-01-15T10:00:00Z","preRelease":false,"downloadUrl":"https://kevinblog.sytes.net/Code/Jibo-Revival-Group/OpenJiboOS/releases/download/v1.0.0/openjiboos-1.0.0.zip","repoUrl":"https://kevinblog.sytes.net/Code/Jibo-Revival-Group/OpenJiboOS/releases/tag/v1.0.0","releaseId":"9823471","tags":["RC","NW","IP"],"fileSize":"45.2 MB","checksum":"sha256:a1b2c3d4e5f6..."}]},{"id":"jibo-server-official","name":"Jibo Server Official","location":"US","type":"Server","baseUrl":"https://github.com/Jibo-Revival-Group/JiboServer","releases":[{"version":"2.0.0","versionTag":"v2.0.0","name":"Jibo Server v2.0.0","description":"Community server implementation for Jibo.","releaseDate":"2024-01-20T16:00:00Z","preRelease":false,"downloadUrl":"https://github.com/Jibo-Revival-Group/JiboServer/releases/download/v2.0.0/jibo-server-2.0.0.zip","repoUrl":"https://github.com/Jibo-Revival-Group/JiboServer/releases/tag/v2.0.0","releaseId":"1234567","tags":["RC","NW","RT"],"fileSize":"128.5 MB","checksum":"sha256:d4e5f6g7h8i9..."}]},{"id":"jibo-recommender","name":"Jibo Recommender","location":"US","type":"Recommender","baseUrl":"https://github.com/Jibo-Revival-Group/JiboRecommender","releases":[{"version":"1.0.0","versionTag":"v1.0.0","name":"Jibo Recommender v1.0.0","description":"AI-powered recommendation system for Jibo.","releaseDate":"2024-03-01T12:00:00Z","preRelease":false,"downloadUrl":"https://github.com/Jibo-Revival-Group/JiboRecommender/releases/download/v1.0.0/jibo-recommender-1.0.0.zip","repoUrl":"https://github.com/Jibo-Revival-Group/JiboRecommender/releases/tag/v1.0.0","releaseId":"2345678","tags":["RC","NW","IP"],"fileSize":"89.3 MB","checksum":"sha256:e5f6g7h8i9j0..."}]}],"metadata":{"lastUpdated":"2024-03-15T10:00:00Z","version":"1.0.0","source":"https://raw.githubusercontent.com/Jibo-Revival-Group/Official-Endpoints/main/OpenJiboOS-Mirrors.json"},"releaseTypes":{"NT":{"label":"Nightly","color":"#9333ea","description":"Development build"},"BF":{"label":"Bug Fix","color":"#059669","description":"Bug fixes only"},"RC":{"label":"Recommended","color":"#0ea5e9","description":"Stable release"},"RT":{"label":"Remote","color":"#f59e0b","description":"For remote servers"},"NW":{"label":"New Features","color":"#10b981","description":"New functionality"},"IP":{"label":"Improvements","color":"#3b82f6","description":"Enhancements"},"RF":{"label":"Refactored","color":"#8b5cf6","description":"Code refactoring"},"BC":{"label":"Breaking Change","color":"#ef4444","description":"May break compatibility","warning":true}}}`;
+
+data = JSON.parse(initialJSON);
+
+// Theme management
+function initTheme() {
+  document.documentElement.setAttribute('data-theme', currentTheme);
+  updateThemeIcon();
+}
+
+function toggleTheme() {
+  currentTheme = currentTheme === 'light' ? 'dark' : 'light';
+  document.documentElement.setAttribute('data-theme', currentTheme);
+  localStorage.setItem('theme', currentTheme);
+  updateThemeIcon();
+}
+
+function updateThemeIcon() {
+  const icon = document.querySelector('.theme-toggle md-icon');
+  if (icon) {
+    icon.textContent = currentTheme === 'light' ? 'dark_mode' : 'light_mode';
+  }
+}
+
+function getCountries(){
+  const countries={};
+  data.mirrors.forEach(m=>{
+    if(!countries[m.location]) countries[m.location]=[];
+    countries[m.location].push(m);
+  });
+  return countries;
+}
+
+function getHosts(country){
+  return data.mirrors.filter(m=>m.location===country);
+}
+
+function renderTag(code){
+  const t=RELEASE_TYPES[code]||{label:code,color:"#555",bg:"#eee"};
+  return `<span class="tag" style="background:${t.bg};color:${t.color}">${t.label}</span>`;
+}
+
+function formatDate(iso){
+  try{return new Date(iso).toLocaleDateString('en-GB',{year:'numeric',month:'short',day:'numeric'})}catch{return iso}
+}
+
+function slugify(s){return s.toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'')}
+
+function showConfirm(msg,cb){
+  confirmCb=cb;
+  const app=document.getElementById('app');
+  let el=document.getElementById('confirm-modal');
+  if(!el){el=document.createElement('div');el.id='confirm-modal';app.appendChild(el);}
+  el.innerHTML=`<div class="confirm-modal"><div class="confirm-box"><p class="confirm-msg">${msg}</p><div class="confirm-actions"><md-outlined-button onclick="closeConfirm()">Cancel</md-outlined-button><md-filled-button onclick="doConfirm()" style="--md-filled-button-container-color: var(--md-sys-color-error); --md-filled-button-label-text-color: var(--md-sys-color-on-error)">Delete</md-filled-button></div></div></div>`;
+}
+function closeConfirm(){
+  const el=document.getElementById('confirm-modal');
+  if(el)el.innerHTML='';
+  confirmCb=null;
+}
+function doConfirm(){
+  if(confirmCb)confirmCb();
+  closeConfirm();
+}
+
+function render(){
+  const app=document.getElementById('app');
+  let html='<div class="wrap">';
+  
+  // breadcrumbs
+  html+=`<div class="step-bar">`;
+  if(view==='countries'){
+    html+=`<span class="crumb active">Countries</span>`;
+  } else if(view==='hosts'){
+    html+=`<span class="crumb" style="cursor:pointer;color:#378ADD" onclick="goCountries()">Countries</span><span class="crumb-sep">›</span><span class="crumb active">${selCountry}</span>`;
+  } else {
+    html+=`<span class="crumb" style="cursor:pointer;color:#378ADD" onclick="goCountries()">Countries</span><span class="crumb-sep">›</span><span class="crumb" style="cursor:pointer;color:#378ADD" onclick="goHosts()">`;
+    html+=selCountry;
+    html+=`</span><span class="crumb-sep">›</span><span class="crumb active">${selHost?selHost.name:''}</span>`;
+  }
+  html+=`</div>`;
+
+  if(view==='countries'){
+    html+=renderCountriesView();
+  } else if(view==='hosts'){
+    html+=renderHostsView();
+  } else {
+    html+=renderReleasesView();
+  }
+
+  // export
+  html+=`<div class="export-bar">`;
+  if(view==='countries'){
+    html+=`<md-outlined-button onclick="loadFile()"><md-icon>upload_file</md-icon> Load JSON file</md-outlined-button>`;
+  }
+  html+=`<md-filled-button onclick="exportJSON()"><md-icon>download</md-icon> Export JSON</md-filled-button></div>`;
+
+  html+='</div>';
+  app.innerHTML=html;
+}
+
+function renderCountriesView(){
+  const countries=getCountries();
+  let html=`<div class="section-label">Select a country</div><div class="grid">`;
+  Object.entries(countries).forEach(([loc,mirrors])=>{
+    const flag=FLAGS[loc]||'🌐';
+    html+=`<div class="tile" onclick="selectCountry('${loc}')">
+      <div class="flag">${flag}</div>
+      <div class="tile-title">${loc}</div>
+      <div class="tile-sub">${mirrors.length} host${mirrors.length!==1?'s':''}</div>
+    </div>`;
+  });
+  html+=`</div>`;
+  html+=`<div class="add-row"><md-outlined-button onclick="openAddHostModal()"><md-icon>add</md-icon> Add host</md-outlined-button></div>`;
+  return html;
+}
+
+function renderHostsView(){
+  const hosts=getHosts(selCountry);
+  const flag=FLAGS[selCountry]||'🌐';
+  let html=`<div class="section-label">${flag} ${selCountry} — Select a host</div><div class="grid">`;
+  hosts.forEach(h=>{
+    html+=`<div class="tile" onclick="selectHost('${h.id}')">
+      <div class="tile-title">${h.name}</div>
+      <div class="tile-sub">${h.type}</div>
+      <div class="tile-sub" style="margin-top:4px">${h.releases.length} release${h.releases.length!==1?'s':''}</div>
+    </div>`;
+  });
+  html+=`</div>`;
+  html+=`<div class="add-row"><md-outlined-button onclick="openAddHostModal()"><md-icon>add</md-icon> Add host</md-outlined-button></div>`;
+  return html;
+}
+
+function renderReleasesView(){
+  if(!selHost) return '';
+  let html=`<div class="host-header"><div class="host-title">${selHost.name}</div><div class="host-sub">${selHost.baseUrl}</div><div class="tile-sub" style="margin-top:4px">Type: ${selHost.type} &nbsp;·&nbsp; Location: ${selHost.location}</div></div>`;
+  html+=`<div class="releases-section">`;
+  html+=`<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px"><div class="section-label" style="margin:0">Releases (${selHost.releases.length})</div><div style="display:flex;gap:8px"><md-outlined-button onclick="deleteHost()"><md-icon>delete</md-icon> Delete host</md-outlined-button><md-filled-button onclick="openAddReleaseModal()"><md-icon>add</md-icon> Add release</md-filled-button></div></div>`;
+  if(!selHost.releases.length){
+    html+=`<div class="empty">No releases yet. Add one above.</div>`;
+  } else {
+    selHost.releases.forEach((r,i)=>{
+      const tags=(r.tags||[]).map(t=>renderTag(t)).join('');
+      html+=`<div class="release-card">
+        <div class="release-header">
+          <div>
+            <div class="release-name">${r.name}</div>
+            <div class="release-meta">${r.version} &nbsp;·&nbsp; ${formatDate(r.releaseDate)} &nbsp;·&nbsp; ${r.fileSize}</div>
+          </div>
+          <div>${r.preRelease?'<span class="badge-pre">Pre-release</span>':'<span class="badge-stable">Stable</span>'}</div>
+        </div>
+        ${tags?`<div class="tags-row">${tags}</div>`:''}
+        <div class="actions">
+          <md-outlined-button onclick="openEditRelease(${i})"><md-icon>edit</md-icon> Edit</md-outlined-button>
+          <md-outlined-button onclick="deleteRelease(${i})" style="--md-outlined-button-label-text-color: var(--md-sys-color-error)"><md-icon style="color: var(--md-sys-color-error)">delete</md-icon> Delete</md-outlined-button>
+        </div>
+      </div>`;
+    });
+  }
+  html+=`</div>`;
+  return html;
+}
+
+function renderModal(){
+  const app=document.getElementById('app');
+  let el=document.getElementById('modal-layer');
+  if(!el){el=document.createElement('div');el.id='modal-layer';el.style.cssText='position:absolute;top:0;left:0;right:0;bottom:0;z-index:100';app.appendChild(el);}
+  
+  if(modal===null){el.innerHTML='';return;}
+
+  if(modal==='addHost'){
+    el.innerHTML=`<div class="modal-bg"><div class="modal">
+      <div class="modal-title">Add host</div>
+      <div class="field"><label>Name *</label><md-outlined-text-field id="m-name" placeholder="OpenJiboOS Mirror EU"></md-outlined-text-field></div>
+      <div class="field-row">
+        <div class="field"><label>Location (country code) *</label><md-outlined-text-field id="m-loc" placeholder="US" maxlength="3"></md-outlined-text-field></div>
+        <div class="field"><label>Type *</label><md-outlined-text-field id="m-type" placeholder="OpenJiboOS"></md-outlined-text-field></div>
+      </div>
+      <div class="field"><label>Base URL *</label><md-outlined-text-field id="m-url" placeholder="https://..."></md-outlined-text-field></div>
+      <div class="modal-actions">
+        <md-outlined-button onclick="closeModal()">Cancel</md-outlined-button>
+        <md-filled-button onclick="saveHost()">Add host</md-filled-button>
+      </div>
+    </div></div>`;
+  }
+
+  if(modal==='addRelease'||modal==='editRelease'){
+    const r=editTarget||{};
+    const checkedTags=r.tags||[];
+    const tagChecks=Object.entries(RELEASE_TYPES).map(([code,t])=>`<label><md-checkbox value="${code}" ${checkedTags.includes(code)?'checked':''}></md-checkbox> ${t.label}</label>`).join('');
+    el.innerHTML=`<div class="modal-bg"><div class="modal">
+      <div class="modal-title">${modal==='addRelease'?'Add release':'Edit release'}</div>
+      <div class="field-row">
+        <div class="field"><label>Version *</label><md-outlined-text-field id="m-ver" value="${r.version||''}" placeholder="1.0.0"></md-outlined-text-field></div>
+        <div class="field"><label>Version tag *</label><md-outlined-text-field id="m-vtag" value="${r.versionTag||''}" placeholder="v1.0.0"></md-outlined-text-field></div>
+      </div>
+      <div class="field"><label>Name *</label><md-outlined-text-field id="m-rname" value="${(r.name||'').replace(/"/g,'&quot;')}" placeholder="Release name"></md-outlined-text-field></div>
+      <div class="field"><label>Description *</label><md-outlined-text-field id="m-desc" rows="4">${r.description||''}</md-outlined-text-field></div>
+      <div class="field-row">
+        <div class="field"><label>Release date *</label><md-outlined-text-field id="m-date" type="datetime-local" value="${r.releaseDate?r.releaseDate.slice(0,16):''}"></md-outlined-text-field></div>
+        <div class="field"><label>Pre-release? *</label><md-select id="m-pre" value="${r.preRelease?'true':'false'}"><md-select-option value="false">Stable</md-select-option><md-select-option value="true">Pre-release</md-select-option></md-select></div>
+      </div>
+      <div class="field"><label>Download URL *</label><md-outlined-text-field id="m-dl" value="${(r.downloadUrl||'').replace(/"/g,'&quot;')}" placeholder="https://..."></md-outlined-text-field></div>
+      <div class="field"><label>Repo URL *</label><md-outlined-text-field id="m-repo" value="${(r.repoUrl||'').replace(/"/g,'&quot;')}" placeholder="https://..."></md-outlined-text-field></div>
+      <div class="field-row">
+        <div class="field"><label>Release ID *</label><md-outlined-text-field id="m-rid" value="${r.releaseId||''}" placeholder="1234567"></md-outlined-text-field></div>
+        <div class="field"><label>File size *</label><md-outlined-text-field id="m-size" value="${r.fileSize||''}" placeholder="45.2 MB"></md-outlined-text-field></div>
+      </div>
+      <div class="field"><label>Checksum *</label><md-outlined-text-field id="m-chk" value="${(r.checksum||'').replace(/"/g,'&quot;')}" placeholder="sha256:..."></md-outlined-text-field></div>
+      <div class="field"><label>Tags (optional)</label><div class="tags-check">${tagChecks}</div></div>
+      <div class="modal-actions">
+        <md-outlined-button onclick="closeModal()">Cancel</md-outlined-button>
+        <md-filled-button onclick="saveRelease()">${modal==='addRelease'?'Add release':'Save changes'}</md-filled-button>
+      </div>
+    </div></div>`;
+  }
+}
+
+function openAddHostModal(){modal='addHost';renderModal();}
+function openAddReleaseModal(){modal='addRelease';editTarget=null;renderModal();}
+function openEditRelease(i){modal='editRelease';editTarget={...selHost.releases[i],_idx:i};renderModal();}
+function closeModal(){modal=null;editTarget=null;renderModal();}
+
+function saveHost(){
+  const nameField=document.getElementById('m-name');
+  const locField=document.getElementById('m-loc');
+  const typeField=document.getElementById('m-type');
+  const urlField=document.getElementById('m-url');
+  
+  const name=nameField.value.trim();
+  const loc=locField.value.trim().toUpperCase();
+  const type=typeField.value.trim();
+  const url=urlField.value.trim();
+  
+  if(!name||!loc||!type||!url){alert('Please fill in all required fields.');return;}
+  const id=slugify(name);
+  data.mirrors.push({id,name,location:loc,type,baseUrl:url,releases:[]});
+  closeModal();
+  selCountry=loc;
+  selHost=data.mirrors.find(m=>m.id===id);
+  view='releases';
+  render();
+}
+
+function saveRelease(){
+  const verField=document.getElementById('m-ver');
+  const vtagField=document.getElementById('m-vtag');
+  const nameField=document.getElementById('m-rname');
+  const descField=document.getElementById('m-desc');
+  const dateField=document.getElementById('m-date');
+  const preField=document.getElementById('m-pre');
+  const dlField=document.getElementById('m-dl');
+  const repoField=document.getElementById('m-repo');
+  const ridField=document.getElementById('m-rid');
+  const sizeField=document.getElementById('m-size');
+  const chkField=document.getElementById('m-chk');
+  
+  const ver=verField.value.trim();
+  const vtag=vtagField.value.trim();
+  const name=nameField.value.trim();
+  const desc=descField.value.trim();
+  const date=dateField.value;
+  const pre=preField.value==='true';
+  const dl=dlField.value.trim();
+  const repo=repoField.value.trim();
+  const rid=ridField.value.trim();
+  const size=sizeField.value.trim();
+  const chk=chkField.value.trim();
+  const tags=[...document.querySelectorAll('#modal-layer md-checkbox[checked]')].map(c=>c.value);
+  
+  if(!ver||!vtag||!name||!desc||!date||!dl||!repo||!rid||!size||!chk){
+    alert('Please fill in all required fields (tags are optional).');return;
+  }
+  
+  const release={version:ver,versionTag:vtag,name,description:desc,releaseDate:new Date(date).toISOString(),preRelease:pre,downloadUrl:dl,repoUrl:repo,releaseId:rid,tags,fileSize:size,checksum:chk};
+  
+  const hostIdx=data.mirrors.findIndex(m=>m.id===selHost.id);
+  if(modal==='addRelease'){
+    data.mirrors[hostIdx].releases.push(release);
+  } else {
+    data.mirrors[hostIdx].releases[editTarget._idx]=release;
+  }
+  selHost=data.mirrors[hostIdx];
+  closeModal();
+  render();
+}
+
+function deleteRelease(i){
+  showConfirm(`Delete release "${selHost.releases[i].name}"? This cannot be undone.`,()=>{
+    const hostIdx=data.mirrors.findIndex(m=>m.id===selHost.id);
+    data.mirrors[hostIdx].releases.splice(i,1);
+    selHost=data.mirrors[hostIdx];
+    render();
+  });
+}
+
+function deleteHost(){
+  showConfirm(`Delete host "${selHost.name}" and all its releases? This cannot be undone.`,()=>{
+    data.mirrors=data.mirrors.filter(m=>m.id!==selHost.id);
+    selHost=null;
+    view='hosts';
+    const remaining=getHosts(selCountry);
+    if(!remaining.length){view='countries';selCountry=null;}
+    render();
+  });
+}
+
+function selectCountry(loc){selCountry=loc;view='hosts';render();}
+function selectHost(id){selHost=data.mirrors.find(m=>m.id===id);view='releases';render();}
+function goCountries(){view='countries';selCountry=null;selHost=null;render();}
+function goHosts(){view='hosts';selHost=null;render();}
+
+function loadFile(){
+  const inp=document.createElement('input');
+  inp.type='file';inp.accept='.json';
+  inp.onchange=e=>{
+    const f=e.target.files[0];
+    if(!f)return;
+    const reader=new FileReader();
+    reader.onload=ev=>{
+      try{data=JSON.parse(ev.target.result);view='countries';selCountry=null;selHost=null;render();}
+      catch{alert('Invalid JSON file.');}
+    };
+    reader.readAsText(f);
+  };
+  inp.click();
+}
+
+function exportJSON(){
+  data.metadata=data.metadata||{};
+  data.metadata.lastUpdated=new Date().toISOString();
+  const json=JSON.stringify(data,null,2);
+  const blob=new Blob([json],{type:'application/json'});
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement('a');
+  a.href=url;a.download='OpenJiboOS-Mirrors.json';a.click();
+  URL.revokeObjectURL(url);
+}
+
+// Initialize theme on page load
+initTheme();
+render();
+</script>

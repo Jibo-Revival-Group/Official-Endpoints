@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>OpenJiboOS Mirror Editor</title>
+  
+  <!-- Material Web Import Map -->
+  <script type="importmap">
+    {
+      "imports": {
+        "@material/web/": "https://esm.run/@material/web/"
+      }
+    }
+  </script>
+  
+  <!-- Material Web Components -->
+  <script type="module">
+    import '@material/web/all.js';
+    import {styles as typescaleStyles} from '@material/web/typography/md-typescale-styles.js';
+    document.adoptedStyleSheets.push(typescaleStyles.styleSheet);
+  </script>
+  
+  <!-- Custom Styles -->
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<!-- Theme toggle button -->
+<div class="theme-toggle">
+  <md-icon-button onclick="toggleTheme()">
+    <md-icon>light_mode</md-icon>
+  </md-icon-button>
+</div>
+
+<!-- Main Application Container -->
+<div class="wrap" id="app" style="position:relative;min-height:400px"></div>
+
+<!-- Application Script -->
+<script type="module">
+  import './app.js';
+</script>
+
+</body>
+</html>
