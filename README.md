@@ -15,6 +15,7 @@ Official Websites associated with the revival project:
 | openjibo.ai | Jaked's URL (Comming Soon)|
 | #jibo:matrix.org | Matrix server? |
 |https://discord.gg/ryVpfXSXD| Discord Server|
+|https://5x1.com| Mail server|
 
 
 - - -
